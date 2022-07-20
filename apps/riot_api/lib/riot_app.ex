@@ -53,7 +53,7 @@ defmodule RiotApp do
     GenServer.call(pid, {:request, url, query})
   end
 
-  defp apply_infos(ratelimiters, infos) do
+  def apply_infos(ratelimiters, infos) do
     infos
     |> Enum.map(fn %{count: count, limit: limit, interval_seconds: seconds} ->
       found = Enum.find(ratelimiters, nil, fn %{seconds: s, limit: l} -> seconds == s and limit == l end)

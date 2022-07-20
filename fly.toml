@@ -4,6 +4,7 @@ app = "league-ml-backend"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
+elixir_version = "v1.10"
 
 [build]
   builder = "heroku/buildpacks:20"

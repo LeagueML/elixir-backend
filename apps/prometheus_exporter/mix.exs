@@ -18,7 +18,7 @@ defmodule PrometheusExporter.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:riot_api, :champion_v3, :logger],
+      extra_applications: [:graphql_api, :riot_api, :champion_v3, :logger],
       mod: {PrometheusExporter, []}
     ]
   end

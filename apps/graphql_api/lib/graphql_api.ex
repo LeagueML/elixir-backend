@@ -13,8 +13,11 @@ defmodule GraphQLApi do
   end
 
   def metrics() do
+    default_buckets = [0.05, 0.1, 0.25, 0.5, 1]
     [
-
+      Telemetry.Metrics.distribution("absinthe.execute.operation.stop.duration", [unit: {:native, :millisecond}, reporter_options: [buckets: default_buckets]]),
+      Telemetry.Metrics.distribution("absinthe.resolve.field.stop.duration", [unit: {:native, :millisecond}, reporter_options: [buckets: default_buckets]]),
+      Telemetry.Metrics.distribution("absinthe.middleware.batch.stop.duration", [unit: {:native, :millisecond}, reporter_options: [buckets: default_buckets]])
     ]
   end
 end

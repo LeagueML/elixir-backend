@@ -22,6 +22,7 @@ defmodule RiotApi.RegionMethod do
 
         @type state :: {Region.t(), [RiotApi.GreedyRatelimiter.t()]}
 
+        # TODO: Change this to use stuff from https://hexdocs.pm/tesla/Tesla.Middleware.Telemetry.html#module-url-event-scoping-with-tesla-middleware-pathparams-and-tesla-middleware-keeprequest
         @impl true
         @spec handle_call({:request, Tesla.Env.url(), Tesla.Env.query()}, any(), state())
         :: {:reply, {:ok, Tesla.Env.body()}

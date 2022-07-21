@@ -48,16 +48,18 @@ defmodule RiotApi do
   end
 
   @spec metrics() :: [Telemetry.Metrics.t()]
-  def metrics(), do:
-  [
-    Telemetry.Metrics.distribution("riot_api.rate_limiting.stop.duration", [unit: {:native, :millisecond}, reporter_options: [buckets: [0.1, 0.5, 1]]]),
-    Telemetry.Metrics.distribution("riot_api.request.app.stop.duration", [unit: {:native, :millisecond}, tags: [:region_or_platform], reporter_options: [buckets: [0.1, 0.5, 1]]]),
-    Telemetry.Metrics.distribution("riot_api.request.method.stop.duration", [unit: {:native, :millisecond}, tags: [:region_or_platform, :method], reporter_options: [buckets: [0.1, 0.5, 1]]]),
-    Telemetry.Metrics.counter("riot_api.rate_limiting.success.reserved", []),
-    Telemetry.Metrics.distribution("riot_api.rate_limiting.backoff.to_wait", [unit: {:second, :millisecond}, reporter_options: [buckets: [0.01, 0.5, 1]]]),
-    Telemetry.Metrics.distribution("tesla.request.stop.duration", [unit: {:native, :millisecond}, reporter_options: [buckets: [0.05, 0.1, 0.25, 0.5, 1]]]),
-    Telemetry.Metrics.distribution("finch.request.stop.duration", [unit: {:native, :millisecond}, reporter_options: [buckets: [0.05, 0.1, 0.25, 0.5, 1]]]),
-    Telemetry.Metrics.counter("finch.connect.start"),
-    Telemetry.Metrics.counter("finch.reused_connection")
-  ]
+  def metrics() do
+    default_buckets = [0.05, 0.1, 0.25, 0.5, 1]
+    [
+      Telemetry.Metrics.distribution("riot_api.rate_limiting.stop.duration", [unit: {:native, :millisecond}, reporter_options: [buckets: default_buckets]]),
+      Telemetry.Metrics.distribution("riot_api.request.app.stop.duration", [unit: {:native, :millisecond}, tags: [:region_or_platform], reporter_options: [buckets: default_buckets]]),
+      Telemetry.Metrics.distribution("riot_api.request.method.stop.duration", [unit: {:native, :millisecond}, tags: [:region_or_platform, :method], reporter_options: [buckets: default_buckets]]),
+      Telemetry.Metrics.counter("riot_api.rate_limiting.success.reserved", []),
+      Telemetry.Metrics.distribution("riot_api.rate_limiting.backoff.to_wait", [unit: {:second, :millisecond}, reporter_options: [buckets: default_buckets]]),
+      Telemetry.Metrics.distribution("tesla.request.stop.duration", [unit: {:native, :millisecond}, reporter_options: [buckets: default_buckets]]),
+      Telemetry.Metrics.distribution("finch.request.stop.duration", [unit: {:native, :millisecond}, reporter_options: [buckets: default_buckets]]),
+      Telemetry.Metrics.counter("finch.connect.start"),
+      Telemetry.Metrics.counter("finch.reused_connection")
+    ]
+  end
 end

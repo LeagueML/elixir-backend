@@ -17,7 +17,9 @@ defmodule GraphQLApi do
     [
       Telemetry.Metrics.distribution("absinthe.execute.operation.stop.duration", [unit: {:native, :millisecond}, reporter_options: [buckets: default_buckets]]),
       Telemetry.Metrics.distribution("absinthe.resolve.field.stop.duration", [unit: {:native, :millisecond}, reporter_options: [buckets: default_buckets]]),
-      Telemetry.Metrics.distribution("absinthe.middleware.batch.stop.duration", [unit: {:native, :millisecond}, reporter_options: [buckets: default_buckets]])
+      Telemetry.Metrics.distribution("absinthe.middleware.batch.stop.duration", [unit: {:native, :millisecond}, reporter_options: [buckets: default_buckets]]),
+      Telemetry.Metrics.distribution("dataloader.source.run.stop.duration", [unit: {:native, :millisecond}, reporter_options: [buckets: default_buckets]]),
+      Telemetry.Metrics.distribution("dataloader.source.batch.run.stop.duration", [unit: {:native, :millisecond}, reporter_options: [buckets: default_buckets]]),
     ]
   end
 end

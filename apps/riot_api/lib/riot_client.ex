@@ -10,6 +10,7 @@ defmodule RiotApi.RiotClient do
   def new(riot_api_token, region_or_platform, adapter) do
     middleware = [
       Tesla.Middleware.DecompressResponse,
+      Tesla.Middleware.Telemetry,
       {Tesla.Middleware.BaseUrl, get_base_url(region_or_platform)},
       Tesla.Middleware.JSON,
       {Tesla.Middleware.Headers, [{"X-Riot-Token", riot_api_token }]}

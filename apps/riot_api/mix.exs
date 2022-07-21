@@ -32,7 +32,7 @@ defmodule RiotApi.MixProject do
       {:dialyxir, "~> 0.5.0", only: [:dev], runtime: false},
       {:telemetry, "~> 1.0"},
       {:telemetry_metrics, "~> 0.6.1"},
-      {:absinthe, "~> 1.6.0"}
+      {:absinthe, "~> 1.7.0"}
     ]
   end
 end

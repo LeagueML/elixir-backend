@@ -2,14 +2,14 @@ defmodule GameConstants do
   @moduledoc false
 
   use Application
+  import Cachex.Spec
 
-  @cache_name GameConstants.Cache
+  @cache_name :game_constants_cache
   @default_ttl :timer.hours(12)
 
   def start(_type, _arg) do
     children = [
-      {Cachex, name: @cache_name, hooks: [Cachex.Telemetry]},
-      {GameConstants.Downloader}
+      {Cachex, name: @cache_name, hooks: [hook(module: Cachex.Telemetry, name: :cachex_telemetry_hook, state: nil)]}
     ]
 
     opts = [strategy: :one_for_one, name: GameConstants.Supervisor]
@@ -25,26 +25,10 @@ defmodule GameConstants do
     ]
   end
 
-  defmodule Season do
-    defstruct [:id, :name]
-
-    @type t :: %__MODULE__{
-      id: integer(),
-      name: String.t()
-    }
-
-    def parse(json) do
-      %__MODULE__{
-        id: json["id"],
-        name: json["season"]
-      }
-    end
-  end
-
   def seasons() do
     {_, result} = Cachex.fetch(@cache_name, :seasons, fn _key ->
       case GameConstants.Client.get("/seasons.json") do
-        {:ok, response} when is_list(response) -> {:commit, Enum.map(response, &Season.parse/1)}
+        {:ok, %{body: response}} when is_list(response) -> {:commit, Enum.map(response, &GameConstants.Season.parse/1)}
         _ -> {:ignore, []}
       end
     end, [ttl: @default_ttl])

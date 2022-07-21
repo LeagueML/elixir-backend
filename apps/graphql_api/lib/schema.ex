@@ -3,8 +3,22 @@ defmodule GraphQLApi.Schema do
 
   import_types RiotApi.Schema
   import_types ChampionV3.Schema
+  import_types GameConstants.Schema
 
   query do
     import_fields :champion_v3_queries
+    import_fields :game_constants_queries
+  end
+
+  def context(ctx) do
+    loader =
+      Dataloader.new()
+      |> Dataloader.add_source(GameConstants.Season, GameConstants.Season.data())
+
+    Map.put(ctx, :loader, loader)
+  end
+
+  def plugins() do
+    [Absinthe.Middleware.Dataloader] ++ Absinthe.Plugin.defaults()
   end
 end

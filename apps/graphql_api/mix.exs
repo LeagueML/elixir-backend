@@ -18,7 +18,7 @@ defmodule GraphqlApi.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:champion_v3, :logger],
+      extra_applications: [:champion_v3, :game_constants, :logger],
       mod: {GraphQLApi, []}
     ]
   end
@@ -28,12 +28,14 @@ defmodule GraphqlApi.MixProject do
     [
       {:dialyxir, "~> 0.5.0", only: [:dev], runtime: false},
       {:plug_cowboy, "~> 2.0"},
-      {:absinthe, "~> 1.6.0"},
+      {:absinthe, "~> 1.7.0"},
       {:absinthe_plug, "~> 1.5"},
       {:jason, "~> 1.0"},
-      {:champion_v3, in_umbrella: true},
       {:telemetry, "~> 1.0"},
-      {:telemetry_metrics, "~> 0.6.1"}
+      {:telemetry_metrics, "~> 0.6.1"},
+      {:dataloader, "~> 1.0.0"},
+      {:champion_v3, in_umbrella: true},
+      {:game_constants, in_umbrella: true}
     ]
   end
 end

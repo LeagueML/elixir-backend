@@ -18,7 +18,7 @@ defmodule PrometheusExporter.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:graphql_api, :riot_api, :champion_v3, :logger],
+      extra_applications: [:game_constants, :graphql_api, :riot_api, :champion_v3, :logger],
       mod: {PrometheusExporter, []}
     ]
   end
@@ -31,7 +31,8 @@ defmodule PrometheusExporter.MixProject do
       {:telemetry, "~> 1.0"},
       {:telemetry_metrics, "~> 0.6.1"},
       {:riot_api, in_umbrella: true},
-      {:champion_v3, in_umbrella: true}
+      {:champion_v3, in_umbrella: true},
+      {:game_constants, in_umbrella: true}
     ]
   end
 end

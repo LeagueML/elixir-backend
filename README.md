@@ -1,4 +1,3 @@
 # Leagueml
 
-**TODO: Add description**
-
+League.ML umbrella project

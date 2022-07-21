@@ -28,17 +28,20 @@ defmodule RegionMethod do
                   | {:error, integer()}
                   | {:tesla_error, any()}, state()}
         def handle_call({:request, url, query}, _from, {region, limiters}) do
-          case GreedyRatelimiter.reserve_all(limiters) do
-            {:ok, new_limiters} ->
-              response = RiotApi.app_request(region, @prefix <> url, query)
-              case response do
-                {:ok, %{method_limit_info: info, body: body}} ->
-                  final_limiters = RiotApp.apply_infos(new_limiters, info)
-                  {:reply, {:ok, body}, {region, final_limiters}}
-                other -> {:reply, other, {region, limiters}}
-              end
-            {:error, i} -> {:reply, {:error, i}, {region, limiters}}
-          end
+          metadata = %{url: url, query: query, region_or_platform: region, method: @prefix}
+          :telemetry.span([:riot_api, :request, :method], metadata, fn ->
+            case GreedyRatelimiter.reserve_all(limiters) do
+              {:ok, new_limiters} ->
+                response = RiotApi.app_request(region, @prefix <> url, query)
+                case response do
+                  {:ok, %{method_limit_info: info, body: body}} ->
+                    final_limiters = RiotApp.apply_infos(new_limiters, info)
+                    {{:reply, {:ok, body}, {region, final_limiters}}, metadata}
+                  other -> {{:reply, other, {region, limiters}}, metadata}
+                end
+              {:error, i} -> {{:reply, {:error, i}, {region, limiters}}, metadata}
+            end
+          end)
         end
       end
 
@@ -79,6 +82,11 @@ defmodule RegionMethod do
         instance = get_instance(region)
         GenServer.call(instance, {:request, postfix, query})
       end
+
+      @spec metrics() :: [any()]
+      def metrics(), do:
+      [
+      ]
     end
   end
 end

@@ -29,8 +29,9 @@ defmodule RiotApi.MixProject do
       {:tesla, "~> 1.4"},
       {:jason, "~> 1.3"},
       {:finch, "~> 0.12.0"},
-      {:explorer, "~> 0.2.0"},
-      {:dialyxir, "~> 0.5.0", only: [:dev], runtime: false}
+      {:dialyxir, "~> 0.5.0", only: [:dev], runtime: false},
+      {:telemetry, "~> 1.0"},
+      {:telemetry_metrics, "~> 0.6.1"}
     ]
   end
 end

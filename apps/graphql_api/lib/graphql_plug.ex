@@ -21,7 +21,8 @@ defmodule GraphqlPlug do
   plug :match
   plug :dispatch
 
+
   match _ do
-    send_resp(conn, 404, nil)
+    send_resp(conn, 404, "")
   end
 end

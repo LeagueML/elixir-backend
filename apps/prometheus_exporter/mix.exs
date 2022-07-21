@@ -1,9 +1,9 @@
-defmodule ChampionV3.MixProject do
+defmodule PrometheusExporter.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :champion_v3,
+      app: :prometheus_exporter,
       version: "0.1.0",
       build_path: "../../_build",
       config_path: "../../config/config.exs",
@@ -15,16 +15,18 @@ defmodule ChampionV3.MixProject do
     ]
   end
 
+  # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger],
-      mod: {ChampionV3, []}
+      extra_applications: [:riot_api, :champion_v3, :logger],
+      mod: {PrometheusExporter, []}
     ]
   end
 
+  # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:riot_api, in_umbrella: true},
+      {:telemetry_metrics_prometheus, "~> 1.1.0"},
       {:telemetry, "~> 1.0"},
       {:telemetry_metrics, "~> 0.6.1"}
     ]

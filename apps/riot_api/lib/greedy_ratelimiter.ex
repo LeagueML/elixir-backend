@@ -35,19 +35,23 @@ defmodule GreedyRatelimiter do
   """
   @spec reserve(GreedyRatelimiter.t()) :: ({:ok, GreedyRatelimiter.t()} | {:error, integer()})
   def reserve(state) do
-    to_wait = (state.seconds * 1000) - DateTime.diff(DateTime.now!("Etc/UTC"), state.start_time, :millisecond)
+    :telemetry.span([:riot_api, :rate_limiting], %{}, fn ->
+      to_wait = (state.seconds * 1000) - DateTime.diff(DateTime.now!("Etc/UTC"), state.start_time, :millisecond)
 
-    new_state = if to_wait <= 0 do
-      new_empty(state.limit, state.seconds)
-    else
-      state
-    end
+      new_state = if to_wait <= 0 do
+        new_empty(state.limit, state.seconds)
+      else
+        state
+      end
 
-    if new_state.count < new_state.limit do
-      {:ok, %__MODULE__{new_state | count: new_state.count + 1}}
-    else
-      {:error, to_wait}
-    end
+      if new_state.count < new_state.limit do
+        :telemetry.execute([:riot_api, :rate_limiting, :success], %{reserved: 1})
+        {{:ok, %__MODULE__{new_state | count: new_state.count + 1}}, %{}}
+      else
+        :telemetry.execute([:riot_api, :rate_limiting, :backoff], %{to_wait: to_wait})
+        {{:error, to_wait}, %{}}
+      end
+    end)
   end
 
   def reserve_all([]) do

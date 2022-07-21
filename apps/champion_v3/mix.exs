@@ -26,7 +26,8 @@ defmodule ChampionV3.MixProject do
     [
       {:riot_api, in_umbrella: true},
       {:telemetry, "~> 1.0"},
-      {:telemetry_metrics, "~> 0.6.1"}
+      {:telemetry_metrics, "~> 0.6.1"},
+      {:absinthe, "~> 1.6.0"}
     ]
   end
 end

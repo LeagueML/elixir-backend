@@ -30,7 +30,9 @@ defmodule GraphqlApi.MixProject do
       {:absinthe, "~> 1.6.0"},
       {:absinthe_plug, "~> 1.5"},
       {:jason, "~> 1.0"},
-      {:champion_v3, in_umbrella: true}
+      {:champion_v3, in_umbrella: true},
+      {:telemetry, "~> 1.0"},
+      {:telemetry_metrics, "~> 0.6.1"}
     ]
   end
 end

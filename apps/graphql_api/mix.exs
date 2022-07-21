@@ -26,6 +26,7 @@ defmodule GraphqlApi.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:dialyxir, "~> 0.5.0", only: [:dev], runtime: false},
       {:plug_cowboy, "~> 2.0"},
       {:absinthe, "~> 1.6.0"},
       {:absinthe_plug, "~> 1.5"},

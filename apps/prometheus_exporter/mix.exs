@@ -27,6 +27,7 @@ defmodule PrometheusExporter.MixProject do
   defp deps do
     [
       {:telemetry_metrics_prometheus, "~> 1.1.0"},
+      {:dialyxir, "~> 0.5.0", only: [:dev], runtime: false},
       {:telemetry, "~> 1.0"},
       {:telemetry_metrics, "~> 0.6.1"},
       {:riot_api, in_umbrella: true},

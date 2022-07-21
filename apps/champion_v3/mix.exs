@@ -25,6 +25,7 @@ defmodule ChampionV3.MixProject do
   defp deps do
     [
       {:riot_api, in_umbrella: true},
+      {:dialyxir, "~> 0.5.0", only: [:dev], runtime: false},
       {:telemetry, "~> 1.0"},
       {:telemetry_metrics, "~> 0.6.1"},
       {:absinthe, "~> 1.6.0"}

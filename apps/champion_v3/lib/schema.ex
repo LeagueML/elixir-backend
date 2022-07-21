@@ -14,7 +14,15 @@ defmodule ChampionV3.Schema do
       arg :region, non_null(:region)
       resolve fn %{region: region}, _ ->
         case ChampionV3.champion_rotation(region) do
-          {:ok, obj} -> {:ok, Map.from_struct(obj)}
+          {:ok, %ChampionV3.ChampionRotation{
+            max_new_player_level: max_new_player_level,
+            free_champion_ids: free_champion_ids,
+            free_champion_ids_for_new_players: free_champion_ids_for_new_players
+          }} -> {:ok, %{
+            max_new_player_level: max_new_player_level,
+            free_champion_ids: free_champion_ids,
+            free_champion_ids_for_new_players: free_champion_ids_for_new_players
+          }}
           {:error, _} -> :error
         end
       end

@@ -15,4 +15,12 @@ defmodule RiotApi.Platform do
 
   @spec all_platforms() :: [t()]
   def all_platforms(), do: @all_platforms
+
+  @spec parse(String.t()) :: {:ok, t()} | :error
+  def parse(value) do
+    case Enum.find(@all_platforms, nil, fn a -> Atom.to_string(a) == value end) do
+      nil -> :error
+      val -> {:ok, val}
+    end
+  end
 end

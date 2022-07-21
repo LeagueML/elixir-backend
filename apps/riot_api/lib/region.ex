@@ -29,4 +29,12 @@ defmodule RiotApi.Region do
 
   @spec all_regions() :: [t()]
   def all_regions(), do: @all_regions
+
+  @spec parse(String.t()) :: {:ok, t()} | :error
+  def parse(value) do
+    case Enum.find(@all_regions, nil, fn a -> Atom.to_string(a) == value end) do
+      nil -> :error
+      val -> {:ok, val}
+    end
+  end
 end

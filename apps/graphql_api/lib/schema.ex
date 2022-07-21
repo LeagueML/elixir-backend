@@ -1,6 +1,7 @@
 defmodule GraphQLApi.Schema do
   use Absinthe.Schema
 
+  import_types RiotApi.Schema
   import_types ChampionV3.Schema
 
   query do

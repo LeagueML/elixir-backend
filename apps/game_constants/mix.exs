@@ -32,7 +32,8 @@ defmodule GameConstants.MixProject do
       {:telemetry, "~> 1.0"},
       {:telemetry_metrics, "~> 0.6.1"},
       {:absinthe, "~> 1.7.0"},
-      {:dataloader, "~> 1.0.0"}
+      {:dataloader, "~> 1.0.0"},
+      {:hackney, "~> 1.18"}
     ]
   end
 end

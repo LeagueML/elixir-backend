@@ -1,4 +1,4 @@
-defmodule GreedyRatelimiter do
+defmodule RiotApi.GreedyRatelimiter do
   @moduledoc """
   A ratelimiter, allowing greedy reserving.
   Greedy reserving means accessing all of the limit at once,
@@ -33,7 +33,7 @@ defmodule GreedyRatelimiter do
   reserve a slot in the GreedyRatelimiter.t() given
   either returns {:ok, new_state} or {:error, to_wait}
   """
-  @spec reserve(GreedyRatelimiter.t()) :: ({:ok, GreedyRatelimiter.t()} | {:error, integer()})
+  @spec reserve(t()) :: ({:ok, t()} | {:error, integer()})
   def reserve(state) do
     :telemetry.span([:riot_api, :rate_limiting], %{}, fn ->
       to_wait = (state.seconds * 1000) - DateTime.diff(DateTime.now!("Etc/UTC"), state.start_time, :millisecond)
@@ -62,13 +62,13 @@ defmodule GreedyRatelimiter do
   reserve one slot in each ratelimiter.
   Returns either {:ok, new_states} or {:error, to_wait}
   """
-  @spec reserve_all([GreedyRatelimiter.t()]) :: ({:ok, [GreedyRatelimiter.t()]} | {:error, integer()})
+  @spec reserve_all([t()]) :: ({:ok, [t()]} | {:error, integer()})
   def reserve_all(ratelimiters) do
     # because we just discard the whole list of new ratelimiters when one fails
     # this automatically rolls back any changes we may have made
     # immutability is great!
     Enum.reduce_while(ratelimiters, {:ok, []}, fn ratelimiter, {:ok, acc} ->
-      case GreedyRatelimiter.reserve(ratelimiter) do
+      case RiotApi.GreedyRatelimiter.reserve(ratelimiter) do
         {:ok, new_ratelimiter} -> {:cont, {:ok, [new_ratelimiter | acc]}}
         {:error, to_wait} -> {:halt, {:error, to_wait}}
       end

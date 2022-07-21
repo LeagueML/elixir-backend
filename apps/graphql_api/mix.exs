@@ -18,7 +18,7 @@ defmodule GraphqlApi.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger],
+      extra_applications: [:champion_v3, :logger],
       mod: {GraphqlApi, []}
     ]
   end
@@ -29,8 +29,8 @@ defmodule GraphqlApi.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:absinthe, "~> 1.6.0"},
       {:absinthe_plug, "~> 1.5"},
-      {:jason, "~> 1.0"}
-      # {:sibling_app_in_umbrella, in_umbrella: true}
+      {:jason, "~> 1.0"},
+      # {:champion_v3, in_umbrella: true}
     ]
   end
 end

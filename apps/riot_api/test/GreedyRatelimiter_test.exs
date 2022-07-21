@@ -1,6 +1,7 @@
 defmodule GreedyRatelimiterTest do
   use ExUnit.Case
-  doctest GreedyRatelimiter
+  doctest RiotApi.GreedyRatelimiter
+  alias RiotApi.GreedyRatelimiter, as: GreedyRatelimiter
 
   test "new empty ratelimiter can be reserved" do
     assert {:ok, _} = GreedyRatelimiter.new_empty(1, 1000) |> GreedyRatelimiter.reserve()

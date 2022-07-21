@@ -11,12 +11,12 @@ defmodule RiotApi do
 
     adapter = {Tesla.Adapter.Finch, name: @finch_name}
 
-    app_configs = Region.all_regions()
-    |> Enum.concat(Platform.all_platforms())
+    app_configs = RiotApi.Region.all_regions()
+    |> Enum.concat(RiotApi.Platform.all_platforms())
     |> Enum.map(fn r -> %{
       id: r,
       start: {
-        RiotApp,
+        RiotApi.RiotApp,
         :start_link,
         [
           api_token, r, adapter,
@@ -35,16 +35,16 @@ defmodule RiotApi do
     Supervisor.start_link(children, opts)
   end
 
-  @spec get_app_instance((Region.t() | Platform.t())) :: pid()
+  @spec get_app_instance((RiotApi.Region.t() | RiotApi.Platform.t())) :: pid()
   defp get_app_instance(region_or_platform) do
     [{pid, nil}] = Registry.lookup(@registry_name, region_or_platform)
     pid
   end
 
-  @spec app_request((Region.t() | Platform.t()), Tesla.Env.url(), Tesla.Env.query()) :: RiotApp.response()
+  @spec app_request((RiotApi.Region.t() | RiotApi.Platform.t()), Tesla.Env.url(), Tesla.Env.query()) :: RiotApp.response()
   def app_request(region_or_platform, url, query) do
     pid = get_app_instance(region_or_platform)
-    RiotApp.request(pid, url, query)
+    RiotApi.RiotApp.request(pid, url, query)
   end
 
   @spec metrics() :: [Telemetry.Metrics.t()]

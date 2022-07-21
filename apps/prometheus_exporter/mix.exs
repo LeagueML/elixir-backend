@@ -28,7 +28,9 @@ defmodule PrometheusExporter.MixProject do
     [
       {:telemetry_metrics_prometheus, "~> 1.1.0"},
       {:telemetry, "~> 1.0"},
-      {:telemetry_metrics, "~> 0.6.1"}
+      {:telemetry_metrics, "~> 0.6.1"},
+      {:riot_api, in_umbrella: true},
+      {:champion_v3, in_umbrella: true}
     ]
   end
 end

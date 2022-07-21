@@ -1,4 +1,4 @@
-defmodule Platform do
+defmodule RiotApi.Platform do
   @type t :: (
     :europe
   | :americas

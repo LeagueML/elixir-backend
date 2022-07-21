@@ -1,6 +1,7 @@
 defmodule RiotRateLimitInfoTest do
   use ExUnit.Case
-  doctest RiotRateLimitInfo
+  doctest RiotApi.RiotRateLimitInfo
+  alias RiotApi.RiotRateLimitInfo, as: RiotRateLimitInfo
 
   test "sample 1 parses correctly" do
     sample = %{

@@ -1,4 +1,4 @@
-defmodule Region do
+defmodule RiotApi.Region do
   @type t :: (
     :euw1
   | :br1

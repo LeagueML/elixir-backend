@@ -1,4 +1,4 @@
-defmodule RiotRateLimitInfo do
+defmodule RiotApi.RiotRateLimitInfo do
   @moduledoc """
   Utilities for parsing and storing riot provided rate limit information
   """
@@ -14,8 +14,7 @@ defmodule RiotRateLimitInfo do
   Parses app and ratelimiting info from HTTP headers
   Returns a tuple {app_limits, method_limits}
   """
-  @spec from_http_headers(map())
-    :: {[RiotRateLimitInfo.t(), ...], [RiotRateLimitInfo.t(), ...]}
+  @spec from_http_headers(map()) :: {[t()], [t()]}
   def from_http_headers(%{
     "x-app-rate-limit" => app_rate_limit_string,
     "x-app-rate-limit-count" => app_rate_limit_count_string,

@@ -3,7 +3,7 @@ defmodule ChampionV3 do
 
   use Application
 
-  use RegionMethod, prefix: "/lol/platform/v3"
+  use RiotApi.RegionMethod, prefix: "/lol/platform/v3"
 
   defmodule ChampionRotation do
     defstruct [:max_new_player_level, :free_champion_ids_for_new_players, :free_champion_ids]

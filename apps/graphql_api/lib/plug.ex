@@ -1,4 +1,4 @@
-defmodule GraphqlPlug do
+defmodule GraphQLApi.Plug do
   use Plug.Router
 
   plug Plug.SSL, rewrite_on: [:x_forwarded_host, :x_forwarded_port, :x_forwarded_proto]
@@ -8,7 +8,7 @@ defmodule GraphqlPlug do
     pass: ["*/*"],
     json_decoder: Jason
 
-  @schema GraphqlSchema
+  @schema GraphQLApi.Schema
 
   forward "/graphiql",
     to: Absinthe.Plug.GraphiQL,

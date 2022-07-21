@@ -17,7 +17,7 @@ defmodule ChampionV3.MixProject do
 
   def application do
     [
-      extra_applications: [:logger],
+      extra_applications: [:riot_api, :logger],
       mod: {ChampionV3, []}
     ]
   end

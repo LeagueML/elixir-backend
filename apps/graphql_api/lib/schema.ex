@@ -1,4 +1,4 @@
-defmodule GraphqlSchema do
+defmodule GraphQLApi.Schema do
   use Absinthe.Schema
 
   query do

@@ -19,7 +19,7 @@ defmodule GraphqlApi.MixProject do
   def application do
     [
       extra_applications: [:champion_v3, :logger],
-      mod: {GraphqlApi, []}
+      mod: {GraphQLApi, []}
     ]
   end
 

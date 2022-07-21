@@ -14,6 +14,7 @@ defmodule GraphQLApi.Schema do
     loader =
       Dataloader.new()
       |> Dataloader.add_source(GameConstants.Season, GameConstants.Season.data())
+      |> Dataloader.add_source(GameConstants.Queue, GameConstants.Queue.data())
 
     Map.put(ctx, :loader, loader)
   end

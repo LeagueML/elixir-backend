@@ -35,4 +35,15 @@ defmodule GameConstants do
 
     result
   end
+
+  def queues() do
+    {_, result} = Cachex.fetch(@cache_name, :queues, fn _key ->
+      case GameConstants.Client.get("/queues.json") do
+        {:ok, %{body: response}} when is_list(response) -> {:commit, Enum.map(response, &GameConstants.Queue.parse/1)}
+        _ -> {:ignore, []}
+      end
+    end, [ttl: @default_ttl])
+
+    result
+  end
 end

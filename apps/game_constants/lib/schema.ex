@@ -4,8 +4,15 @@ defmodule GameConstants.Schema do
   import Absinthe.Resolution.Helpers, only: [dataloader: 2]
 
   object :season do
-    field :id, :integer
-    field :name, :string
+    field :id, non_null(:integer)
+    field :name, non_null(:string)
+  end
+
+  object :queue do
+    field :id, non_null(:integer)
+    field :map, non_null(:string)
+    field :description, :string
+    field :notes, :string
   end
 
   object :game_constants_queries do
@@ -23,6 +30,17 @@ defmodule GameConstants.Schema do
     field :season_by_name, :season do
       arg :id, non_null(:integer)
       resolve dataloader(GameConstants.Season, :by_name)
+    end
+
+    field :queues, list_of(:queue) do
+      resolve fn _, _ ->
+        {:ok, GameConstants.queues()}
+      end
+    end
+
+    field :queue_by_id, :queue do
+      arg :id, non_null(:integer)
+      resolve dataloader(GameConstants.Queue, :by_id)
     end
   end
 end

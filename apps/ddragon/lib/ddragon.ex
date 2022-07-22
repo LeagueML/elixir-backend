@@ -33,4 +33,30 @@ defmodule Ddragon do
 
     result
   end
+
+  def champion_by_name(version, champion_name) do
+    {_, result} = Cachex.fetch(@cache_name, {:champion, version, champion_name}, fn _key ->
+      case Ddragon.Client.get("/cdn/" <> version <> "/data/en_US/champion/" <> champion_name <>".json") do
+        {:ok, %{body: response}} -> {:commit, Ddragon.Champion.parse(response["data"][champion_name])}
+        _ -> {:ignore, nil}
+      end
+    end, [ttl: @default_ttl])
+
+    result
+  end
+
+  def champion_list(version) do
+    {_, result} = Cachex.fetch(@cache_name, {:champion_list, version}, fn _key ->
+      case Ddragon.Client.get("/cdn/" <> version <>"/data/en_US/champion.json") do
+        {:ok, %{body: response}} ->
+          {:commit,
+            response["data"]
+            |> Map.to_list()
+            |> Enum.map(fn {k, _v} -> k end)}
+        _ -> {:ignore, nil}
+      end
+    end, [ttl: @default_ttl])
+
+    result
+  end
 end

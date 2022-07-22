@@ -19,6 +19,7 @@ defmodule GraphQLApi.Schema do
       |> Dataloader.add_source(GameConstants.Queue, GameConstants.Queue.data())
       |> Dataloader.add_source(GameConstants.Map, GameConstants.Map.data())
       |> Dataloader.add_source(GameConstants.GameMode, GameConstants.GameMode.data())
+      |> Dataloader.add_source(Ddragon.Champion, Ddragon.Champion.data())
 
     Map.put(ctx, :loader, loader)
   end

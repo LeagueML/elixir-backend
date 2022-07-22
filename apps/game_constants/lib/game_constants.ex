@@ -9,7 +9,7 @@ defmodule GameConstants do
 
   def start(_type, _arg) do
     children = [
-      {Cachex, name: @cache_name, hooks: [hook(module: Cachex.Telemetry, name: :cachex_telemetry_hook, state: nil)]}
+      {Cachex, name: @cache_name, hooks: [hook(module: Cachex.Telemetry, name: :game_constants_cachex_telemetry_hook, state: {:game_constants})]}
     ]
 
     opts = [strategy: :one_for_one, name: GameConstants.Supervisor]
@@ -17,11 +17,7 @@ defmodule GameConstants do
   end
 
   def metrics() do
-    default_buckets = [0.05, 0.1, 0.25, 0.5, 1]
     [
-      Telemetry.Metrics.distribution("tesla.request.stop.duration", [unit: {:native, :millisecond}, reporter_options: [buckets: default_buckets]]),
-      Telemetry.Metrics.counter("cachex.fetch.commit"),
-      Telemetry.Metrics.counter("cachex.fetch.ok")
     ]
   end
 

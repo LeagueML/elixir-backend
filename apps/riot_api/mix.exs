@@ -26,6 +26,7 @@ defmodule RiotApi.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:cachex, "~> 3.4"},
       {:tesla, "~> 1.4"},
       {:jason, "~> 1.3"},
       {:finch, "~> 0.12.0"},

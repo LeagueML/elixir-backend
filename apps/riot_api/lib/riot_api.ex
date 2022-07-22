@@ -59,7 +59,9 @@ defmodule RiotApi do
       Telemetry.Metrics.distribution("tesla.request.stop.duration", [unit: {:native, :millisecond}, reporter_options: [buckets: default_buckets]]),
       Telemetry.Metrics.distribution("finch.request.stop.duration", [unit: {:native, :millisecond}, reporter_options: [buckets: default_buckets]]),
       Telemetry.Metrics.counter("finch.connect.start"),
-      Telemetry.Metrics.counter("finch.reused_connection")
+      Telemetry.Metrics.counter("finch.reused_connection"),
+      Telemetry.Metrics.counter("cachex.fetch.commit", [tags: [:name]]),
+      Telemetry.Metrics.counter("cachex.fetch.ok", [tags: [:name]])
     ]
   end
 end

@@ -18,4 +18,5 @@ defmodule PrometheusExporter do
     |> Enum.concat(RiotApi.metrics())
     |> Enum.concat(GraphQLApi.metrics())
     |> Enum.concat(GameConstants.metrics())
+    |> Enum.concat(Ddragon.metrics())
 end

@@ -1,9 +1,9 @@
-defmodule PrometheusExporter.MixProject do
+defmodule Ddragon.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :prometheus_exporter,
+      app: :ddragon,
       version: "0.1.0",
       build_path: "../../_build",
       config_path: "../../config/config.exs",
@@ -18,22 +18,22 @@ defmodule PrometheusExporter.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:ddragon, :game_constants, :graphql_api, :riot_api, :champion_v3, :logger],
-      mod: {PrometheusExporter, []}
+      extra_applications: [:logger],
+      mod: {Ddragon, []}
     ]
   end
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:telemetry_metrics_prometheus, "~> 1.1.0"},
+      {:cachex, "~> 3.4"},
+      {:tesla, "~> 1.4"},
       {:dialyxir, "~> 0.5.0", only: [:dev], runtime: false},
       {:telemetry, "~> 1.0"},
       {:telemetry_metrics, "~> 0.6.1"},
-      {:riot_api, in_umbrella: true},
-      {:champion_v3, in_umbrella: true},
-      {:game_constants, in_umbrella: true},
-      {:ddragon, in_umbrella: true}
+      {:absinthe, "~> 1.7.0"},
+      {:dataloader, "~> 1.0.0"},
+      {:hackney, "~> 1.18"}
     ]
   end
 end

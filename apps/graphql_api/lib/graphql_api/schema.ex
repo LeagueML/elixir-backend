@@ -4,10 +4,12 @@ defmodule GraphQLApi.Schema do
   import_types RiotApi.Schema
   import_types ChampionV3.Schema
   import_types GameConstants.Schema
+  import_types Ddragon.Schema
 
   query do
     import_fields :champion_v3_queries
     import_fields :game_constants_queries
+    import_fields :ddragon_queries
   end
 
   def context(ctx) do

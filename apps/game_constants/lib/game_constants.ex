@@ -57,4 +57,15 @@ defmodule GameConstants do
 
     result
   end
+
+  def game_modes() do
+    {_, result} = Cachex.fetch(@cache_name, :game_modes, fn _key ->
+      case GameConstants.Client.get("/gameModes.json") do
+        {:ok, %{body: response}} when is_list(response) -> {:commit, Enum.map(response, &GameConstants.GameMode.parse/1)}
+        _ -> {:ignore, []}
+      end
+    end, [ttl: @default_ttl])
+
+    result
+  end
 end

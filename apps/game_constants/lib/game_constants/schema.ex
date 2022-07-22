@@ -21,6 +21,11 @@ defmodule GameConstants.Schema do
     field :notes, :string
   end
 
+  object :game_mode do
+    field :name, non_null(:string)
+    field :description, :string
+  end
+
   object :game_constants_queries do
     field :seasons, list_of(:season) do
       resolve fn _, _ ->
@@ -58,6 +63,17 @@ defmodule GameConstants.Schema do
     field :map_by_id, :map do
       arg :id, non_null(:integer)
       resolve dataloader(GameConstants.Map, :by_id)
+    end
+
+    field :game_modes, list_of(:game_mode) do
+      resolve fn _, _ ->
+        {:ok, GameConstants.game_modes()}
+      end
+    end
+
+    field :game_mode_by_name, :game_mode do
+      arg :name, non_null(:string)
+      resolve dataloader(GameConstants.GameMode, :by_name)
     end
   end
 end

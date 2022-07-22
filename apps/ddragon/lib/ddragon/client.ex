@@ -6,5 +6,6 @@ defmodule Ddragon.Client do
   plug Tesla.Middleware.DecompressResponse
   plug Tesla.Middleware.BaseUrl, "https://ddragon.leagueoflegends.com/"
   plug Tesla.Middleware.JSON
+  plug Tesla.Middleware.Telemetry
 
 end

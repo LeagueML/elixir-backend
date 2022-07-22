@@ -114,7 +114,7 @@ defmodule Ddragon.Schema do
         |> Dataloader.load_many(Ddragon.Champion, :by_name, values)
         |> on_load(fn loader ->
           results = Dataloader.get_many(loader, Ddragon.Champion, :by_name, values)
-          {:ok, results}
+          {:ok, results |> Enum.at(0)}
         end)
       end
     end

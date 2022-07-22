@@ -17,9 +17,11 @@ defmodule GameConstants.GameMode do
       Dataloader.KV.new(&fetch/2)
     end
 
-    defp fetch({:by_name, %{name: name}}, %{}) do
+    defp fetch(:by_name, args) do
       all_seasons = GameConstants.game_modes()
 
-      %{%{} => Enum.find(all_seasons, nil, fn %__MODULE__{name: name2} -> name2 == name end)}
+      Enum.reduce(args, %{}, fn %{name: name} = arg, map ->
+        Map.put(map, arg, Enum.find(all_seasons, nil, fn %__MODULE__{name: name2} -> name2 == name end))
+      end)
     end
 end

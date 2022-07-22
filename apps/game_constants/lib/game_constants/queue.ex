@@ -21,9 +21,11 @@ defmodule GameConstants.Queue do
       Dataloader.KV.new(&fetch/2)
     end
 
-    defp fetch({:by_id, %{id: id}}, %{}) do
-      all_seasons = GameConstants.queues()
+    defp fetch(:by_id, args) do
+      all_queues = GameConstants.queues()
 
-      %{%{} => Enum.find(all_seasons, nil, fn %__MODULE__{id: id2} -> id2 == id end)}
+      Enum.reduce(args, %{}, fn %{id: id} = arg, map ->
+        Map.put(map, arg, Enum.find(all_queues, nil, fn %__MODULE__{id: id2} -> id2 == id end))
+      end)
     end
 end

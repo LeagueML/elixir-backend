@@ -20,4 +20,17 @@ defmodule Ddragon do
     [
     ]
   end
+
+  def versions() do
+    {_, result} = Cachex.fetch(@cache_name, :versions, fn _key ->
+      case Ddragon.Client.get("/api/versions.json") do
+        {:ok, %{body: response}} when is_list(response) -> {:commit, response
+        |> Enum.filter(fn x -> not String.starts_with?(x, "lolpatch") end)
+        |> Enum.map(&Ddragon.Version.parse/1)}
+        _ -> {:ignore, []}
+      end
+    end, [ttl: @default_ttl])
+
+    result
+  end
 end

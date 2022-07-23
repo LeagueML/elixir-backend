@@ -16,6 +16,8 @@ defmodule Ddragon.Schema do
     end
   end
 
+  connection node_type: :version
+
   object :image do
     field :full, non_null(:string)
     field :sprite, non_null(:string)
@@ -38,6 +40,8 @@ defmodule Ddragon.Schema do
     field :name, non_null(:string)
     field :chromas, :boolean
   end
+
+  connection node_type: :skin
 
   object :champion_info do
     field :attack, non_null(:integer)
@@ -76,7 +80,11 @@ defmodule Ddragon.Schema do
     field :title, non_null(:string)
     field :info, non_null(:champion_info)
     field :image, non_null(:image)
-    field :skins, non_null(list_of(non_null(:skin)))
+    connection field :skins, node_type: :skin do
+      resolve fn pagination_args, %{source: %{skins: skins}} ->
+        Absinthe.Relay.Connection.from_list(skins, pagination_args)
+      end
+    end
     field :lore, non_null(:string)
     field :ally_tips, non_null(list_of(non_null(:string)))
     field :enemy_tips, non_null(list_of(non_null(:string)))
@@ -88,10 +96,12 @@ defmodule Ddragon.Schema do
     field :passive, non_null(:champion_passive)
   end
 
+  connection node_type: :champion
+
   object :ddragon_queries do
-    field :versions, list_of(:version) do
-      resolve fn _, _ ->
-        {:ok, Ddragon.versions()}
+    connection field :versions, node_type: :version do
+      resolve fn pagination_args, _ ->
+        Absinthe.Relay.Connection.from_list(Ddragon.versions(), pagination_args)
       end
     end
 
@@ -116,16 +126,28 @@ defmodule Ddragon.Schema do
       end
     end
 
-    field :champions, non_null(list_of(:champion)) do
+    connection field :champions, node_type: :champion do
       arg :version, non_null(:string)
-      resolve fn _parent, %{version: version}, %{context: %{loader: loader}} ->
+      resolve fn %{version: version} = pagination_args, %{context: %{loader: loader}} ->
+        {:ok, pagination_direction, limit} = Absinthe.Relay.Connection.limit(pagination_args)
+        {:ok, offset} = Absinthe.Relay.Connection.offset(pagination_args)
+        data = Ddragon.champion_list(version)
+        absolute_offset = case {offset, pagination_direction} do
+          {nil, :forward} -> 0
+          {:nil, :backward} -> length(data) - limit
+          {offset, :forward} -> offset
+          {offset, :backward} -> length(data) - limit - offset
+        end
+
         values = Ddragon.champion_list(version)
+        |> Enum.drop(absolute_offset)
+        |> Enum.take(limit)
         |> Enum.map(fn %{id: id} -> %{version: version, id: id} end)
         loader
         |> Dataloader.load_many(Ddragon.Champion, :by_id, values)
         |> on_load(fn loader ->
           results = Dataloader.get_many(loader, Ddragon.Champion, :by_id, values)
-          {:ok, results}
+          Absinthe.Relay.Connection.from_slice(results, offset)
         end)
       end
     end

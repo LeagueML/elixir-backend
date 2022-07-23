@@ -9,6 +9,8 @@ defmodule GameConstants.Schema do
     field :name, non_null(:string)
   end
 
+  connection node_type: :season
+
   object :queue do
     field :id, non_null(:integer)
     field :map, non_null(:string)
@@ -16,21 +18,27 @@ defmodule GameConstants.Schema do
     field :notes, :string
   end
 
+  connection node_type: :queue
+
   object :map do
     field :id, non_null(:integer)
     field :name, non_null(:string)
     field :notes, :string
   end
 
+  connection node_type: :map
+
   object :game_mode do
     field :name, non_null(:string)
     field :description, :string
   end
 
+  connection node_type: :game_mode
+
   object :game_constants_queries do
-    field :seasons, list_of(:season) do
-      resolve fn _, _ ->
-        {:ok, GameConstants.seasons()}
+    connection field :seasons, node_type: :season do
+      resolve fn pagination_args, _ ->
+        Absinthe.Relay.Connection.from_list(GameConstants.seasons(), pagination_args)
       end
     end
 
@@ -60,9 +68,9 @@ defmodule GameConstants.Schema do
       end
     end
 
-    field :queues, list_of(:queue) do
-      resolve fn _, _ ->
-        {:ok, GameConstants.queues()}
+    connection field :queues, node_type: :queue do
+      resolve fn pagination_args, _ ->
+        Absinthe.Relay.Connection.from_list(GameConstants.queues(), pagination_args)
       end
     end
 
@@ -79,9 +87,9 @@ defmodule GameConstants.Schema do
       end
     end
 
-    field :maps, list_of(:map) do
-      resolve fn _, _ ->
-        {:ok, GameConstants.maps()}
+    connection field :maps, node_type: :map do
+      resolve fn pagination_args, _ ->
+        Absinthe.Relay.Connection.from_list(GameConstants.maps(), pagination_args)
       end
     end
 
@@ -98,9 +106,9 @@ defmodule GameConstants.Schema do
       end
     end
 
-    field :game_modes, list_of(:game_mode) do
-      resolve fn _, _ ->
-        {:ok, GameConstants.game_modes()}
+    connection field :game_modes, node_type: :game_mode do
+      resolve fn pagination_args, _ ->
+        Absinthe.Relay.Connection.from_list(GameConstants.game_modes(), pagination_args)
       end
     end
 

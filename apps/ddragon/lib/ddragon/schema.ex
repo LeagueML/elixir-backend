@@ -10,11 +10,7 @@ defmodule Ddragon.Schema do
     field :revision, :integer
     field :version_string, non_null(:string) do
       resolve fn parent, %{}, _ ->
-        if parent.revision do
-          {:ok, "#{parent.major}.#{parent.minor}.#{parent.patch}.#{parent.revision}"}
-        else
-          {:ok, "#{parent.major}.#{parent.minor}.#{parent.patch}"}
-        end
+        {:ok, Ddragon.Version.version_string(parent)}
       end
     end
   end
@@ -105,15 +101,15 @@ defmodule Ddragon.Schema do
       end
     end
 
-    field :champion, :champion do
+    field :champion_by_id, :champion do
       arg :version, non_null(:string)
-      arg :name, non_null(:string)
+      arg :id, non_null(:string)
       resolve fn _parent, args, %{context: %{loader: loader}} ->
         values = [args]
         loader
-        |> Dataloader.load_many(Ddragon.Champion, :by_name, values)
+        |> Dataloader.load_many(Ddragon.Champion, :by_id, values)
         |> on_load(fn loader ->
-          results = Dataloader.get_many(loader, Ddragon.Champion, :by_name, values)
+          results = Dataloader.get_many(loader, Ddragon.Champion, :by_id, values)
           {:ok, results |> Enum.at(0)}
         end)
       end
@@ -123,11 +119,11 @@ defmodule Ddragon.Schema do
       arg :version, non_null(:string)
       resolve fn _parent, %{version: version}, %{context: %{loader: loader}} ->
         values = Ddragon.champion_list(version)
-        |> Enum.map(fn champion -> %{version: version, name: champion} end)
+        |> Enum.map(fn %{id: id} -> %{version: version, id: id} end)
         loader
-        |> Dataloader.load_many(Ddragon.Champion, :by_name, values)
+        |> Dataloader.load_many(Ddragon.Champion, :by_id, values)
         |> on_load(fn loader ->
-          results = Dataloader.get_many(loader, Ddragon.Champion, :by_name, values)
+          results = Dataloader.get_many(loader, Ddragon.Champion, :by_id, values)
           {:ok, results}
         end)
       end

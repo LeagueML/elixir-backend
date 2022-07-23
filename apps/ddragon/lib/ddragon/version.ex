@@ -8,6 +8,14 @@ defmodule Ddragon.Version do
       revision: integer() | nil
     }
 
+    def version_string(version) do
+      if version.revision do
+        "#{version.major}.#{version.minor}.#{version.patch}.#{version.revision}"
+      else
+        "#{version.major}.#{version.minor}.#{version.patch}"
+      end
+    end
+
     def parse(json) do
       parts = String.split(json, ".")
         |> Enum.map(fn s ->

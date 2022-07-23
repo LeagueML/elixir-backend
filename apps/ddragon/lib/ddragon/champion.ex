@@ -82,9 +82,19 @@ defmodule Ddragon.Champion do
       Dataloader.KV.new(&fetch/2)
     end
 
-    defp fetch(:by_name, args) do
-      Enum.reduce(args, %{}, fn %{version: version, name: name} = arg, map ->
-        Map.put(map, arg, Ddragon.champion_by_name(version, name))
+    defp fetch(:by_id, args) do
+      Enum.reduce(args, %{}, fn %{version: version, id: id} = arg, map ->
+        Map.put(map, arg, Ddragon.champion_by_id(version, id))
+      end)
+    end
+
+    defp fetch(:by_key, args) do
+      Enum.reduce(args, %{}, fn %{version: version, key: key} = arg, map ->
+        champion_list = Ddragon.champion_list(version)
+        Map.put(map, arg, case Enum.find(champion_list, nil, fn %{key: key2} -> key == key2 end) do
+          nil -> nil
+          %{id: id} -> Ddragon.champion_by_id(version, id)
+        end)
       end)
     end
 end

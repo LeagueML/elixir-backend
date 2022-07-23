@@ -8,7 +8,7 @@ defmodule GraphQLApi do
       {Plug.Cowboy, scheme: :http, plug: GraphQLApi.Plug, options: [port: 8080]}
     ]
 
-    opts = [strategy: :one_for_one, name: MyApp.Supervisor]
+    opts = [strategy: :one_for_one, name: GraphQLApi.Supervisor]
     Supervisor.start_link(children, opts)
   end
 

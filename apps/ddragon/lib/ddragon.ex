@@ -46,7 +46,7 @@ defmodule Ddragon do
   end
 
   def champion_list(version) do
-    {_, result} = Cachex.fetch(@cache_name, {:champion_list, version} |> IO.inspect(), fn _key ->
+    {_, result} = Cachex.fetch(@cache_name, {:champion_list, version}, fn _key ->
       case Ddragon.Client.get("/cdn/" <> version <>"/data/en_US/champion.json") do
         {:ok, %{body: response}} ->
           {:commit,
@@ -58,7 +58,7 @@ defmodule Ddragon do
             end)}
         _ -> {:ignore, nil}
       end
-    end, [ttl: @default_ttl]) |> IO.inspect()
+    end, [ttl: @default_ttl])
 
     result
   end

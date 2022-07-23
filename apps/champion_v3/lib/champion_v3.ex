@@ -21,9 +21,15 @@ defmodule ChampionV3 do
 
   @spec champion_rotation(Region.t()) :: {:ok, ChampionV3.ChampionRotation.t()} | {:error, integer()}
   def champion_rotation(region) do
-    case get(region, "/champion-rotations", []) do
-      {:ok, json} -> {:ok, ChampionV3.ChampionRotation.parse(json)}
-      other -> other
+    case cache({:champion_rotation, region}, fn ->
+      case get(region, "/champion-rotations", []) do
+        {:ok, json} -> {:commit, ChampionV3.ChampionRotation.parse(json)}
+        other -> {:ignore, other}
+      end
+    end) do
+      {:ok, result} -> {:ok, result}
+      {:commit, result} -> {:ok, result}
+      {:ignore, {:error, i}} -> {:error, i}
     end
   end
 end

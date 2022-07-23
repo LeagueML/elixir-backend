@@ -47,6 +47,8 @@ defmodule RiotApi.RegionMethod do
       end
 
       @registry_name __MODULE__.Registry
+      @cache_name __MODULE__.Cachex
+      import Cachex.Spec, only: [hook: 1]
 
       def start(_type, _args) do
         workers =
@@ -64,7 +66,8 @@ defmodule RiotApi.RegionMethod do
           } end)
 
         children = [
-          {Registry, keys: :unique, name: @registry_name}
+          {Registry, keys: :unique, name: @registry_name},
+          {Cachex, name: @cache_name, hooks: [hook(module: Cachex.Telemetry, name: unquote(String.to_atom(prefix <> "_cachex_telemetry_hook")), state: {unquote(String.to_atom(prefix))})]}
         ]
         |> Enum.concat(workers)
 
@@ -82,6 +85,11 @@ defmodule RiotApi.RegionMethod do
       defp get(region, postfix, query) do
         instance = get_instance(region)
         GenServer.call(instance, {:request, postfix, query})
+      end
+
+      @spec cache(any(), function) :: any()
+      defp cache(key, function) do
+        Cachex.fetch(@cache_name, key, fn _ -> function.() end)
       end
 
       @spec metrics() :: [any()]

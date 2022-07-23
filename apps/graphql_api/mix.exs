@@ -34,6 +34,7 @@ defmodule GraphqlApi.MixProject do
       {:telemetry, "~> 1.0"},
       {:telemetry_metrics, "~> 0.6.1"},
       {:dataloader, "~> 1.0.0"},
+      {:absinthe_relay, "~> 1.5.0"},
       {:champion_v3, in_umbrella: true},
       {:game_constants, in_umbrella: true},
       {:ddragon, in_umbrella: true}

@@ -33,7 +33,8 @@ defmodule Ddragon.MixProject do
       {:telemetry_metrics, "~> 0.6.1"},
       {:absinthe, "~> 1.7.0"},
       {:dataloader, "~> 1.0.0"},
-      {:hackney, "~> 1.18"}
+      {:hackney, "~> 1.18"},
+      {:absinthe_relay, "~> 1.5.0"}
     ]
   end
 end

@@ -30,7 +30,8 @@ defmodule ChampionV3.MixProject do
       {:telemetry, "~> 1.0"},
       {:telemetry_metrics, "~> 0.6.1"},
       {:dataloader, "~> 1.0.0"},
-      {:absinthe, "~> 1.7.0"}
+      {:absinthe, "~> 1.7.0"},
+      {:absinthe_relay, "~> 1.5.0"}
     ]
   end
 end

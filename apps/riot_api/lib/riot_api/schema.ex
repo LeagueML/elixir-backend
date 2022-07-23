@@ -1,5 +1,6 @@
 defmodule RiotApi.Schema do
   use Absinthe.Schema.Notation
+  use Absinthe.Relay.Schema.Notation, :modern
 
   scalar :region do
     serialize &serialize_region/1

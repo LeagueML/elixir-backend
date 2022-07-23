@@ -1,5 +1,6 @@
 defmodule GraphQLApi.Schema do
   use Absinthe.Schema
+  use Absinthe.Relay.Schema, :modern
 
   import_types RiotApi.Schema
   import_types ChampionV3.Schema

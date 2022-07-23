@@ -16,11 +16,6 @@ defmodule Ddragon do
     Supervisor.start_link(children, opts)
   end
 
-  def metrics() do
-    [
-    ]
-  end
-
   def versions() do
     {_, result} = Cachex.fetch(@cache_name, :versions, fn _key ->
       case Ddragon.Client.get("/api/versions.json") do

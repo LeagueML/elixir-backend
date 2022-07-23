@@ -91,11 +91,6 @@ defmodule RiotApi.RegionMethod do
       defp cache(key, function) do
         Cachex.fetch(@cache_name, key, fn _ -> function.() end)
       end
-
-      @spec metrics() :: [any()]
-      def metrics(), do:
-      [
-      ]
     end
   end
 end

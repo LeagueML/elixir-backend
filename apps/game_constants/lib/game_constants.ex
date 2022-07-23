@@ -16,11 +16,6 @@ defmodule GameConstants do
     Supervisor.start_link(children, opts)
   end
 
-  def metrics() do
-    [
-    ]
-  end
-
   def seasons() do
     {_, result} = Cachex.fetch(@cache_name, :seasons, fn _key ->
       case GameConstants.Client.get("/seasons.json") do

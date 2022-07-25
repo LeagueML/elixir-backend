@@ -4,15 +4,13 @@ defmodule GameConstants.Schema do
   use Absinthe.Relay.Schema.Notation, :modern
   import Absinthe.Resolution.Helpers, only: [on_load: 2]
 
-  object :season do
-    field :id, non_null(:integer)
+  node object :season do
     field :name, non_null(:string)
   end
 
   connection node_type: :season
 
-  object :queue do
-    field :id, non_null(:integer)
+  node object :queue do
     field :map, non_null(:string)
     field :description, :string
     field :notes, :string
@@ -20,8 +18,7 @@ defmodule GameConstants.Schema do
 
   connection node_type: :queue
 
-  object :map do
-    field :id, non_null(:integer)
+  node object :map do
     field :name, non_null(:string)
     field :notes, :string
   end

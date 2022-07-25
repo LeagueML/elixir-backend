@@ -73,8 +73,7 @@ defmodule Ddragon.Schema do
     field :attackspeed_per_level, non_null(:float)
   end
 
-  object :champion do
-    field :id, non_null(:string)
+  node object :champion do
     field :key, non_null(:integer)
     field :name, non_null(:string)
     field :title, non_null(:string)
